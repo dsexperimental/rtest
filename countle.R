@@ -54,7 +54,7 @@ equationToString <- function(i1,i2,op,result) {
 ## this function updates the state list for a given set of indices and
 ## an operation
 updateList <- function(i1,i2,op,stateList) {
-  if( i1 < 1 || i2 > length(stateList$numbers) ) error("Bad index!")
+  if( i1 < 1 || i1 > length(stateList$numbers) ) error("Bad index!")
   if( i2 < 1 || i2 > length(stateList$numbers) ) error("Bad index!")
   result <- solveEquation(stateList$numbers[i1],stateList$numbers[i2],op)
   
@@ -66,7 +66,10 @@ updateList <- function(i1,i2,op,stateList) {
   newNumbers <- c(stateList$numbers[indices != i1 & indices != i2],result)
   
   # update to status
-  if(result == target) {
+  if(is.na(result)) {
+    newStatus <- "failed"
+  }
+  else if(result == target) {
     newStatus <- "success"
   }
   else if(floor(result) != result) {
@@ -90,7 +93,7 @@ updateList <- function(i1,i2,op,stateList) {
 ## this function does an iteration of the puzzle
 ## trying all combinations of numbers and operations
 doIteration <- function(stateList) {
-  #print(stateList)
+  # print(stateList)
   #dummy <- readline("Hit enter to continue")
   
   ## do the next iteration
